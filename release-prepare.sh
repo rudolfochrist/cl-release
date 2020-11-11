@@ -34,7 +34,7 @@ EOF
 
 # Parsing args
 
-VERSION=0.1.0
+VERSION=0.1
 LISP="sbcl --non-interactive"
 FORCE=0
 
