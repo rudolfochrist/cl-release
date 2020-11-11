@@ -4,7 +4,7 @@
 .SUFFIXES:
 .SUFFIXES: sh
 
-VERSION=0.1
+VERSION=0.2.0
 CL_RELEASE=cl-release-$(VERSION)
 
 # paths
