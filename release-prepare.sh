@@ -108,6 +108,8 @@ SHELLP=1 $LISP --eval "(require 'asdf)" \
 
 if [ $? -ne 0 ]; then
     echo "${BOLD}${RED}ERROR.${NC}${NORM}"
+    rm release-prepare
+    exit 1
 else
     echo "${BOLD}${GREEN}FINISHED${NC}${NORM}"
 fi
