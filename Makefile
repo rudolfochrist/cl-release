@@ -23,7 +23,7 @@ OBJS=$(SRCS:.sh=)
 
 all: $(OBJS)
 
-$(OBJS): $(SRCS)
+%: %.sh
 	cp $< $@
 
 clean:
