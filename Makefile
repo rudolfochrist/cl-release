@@ -6,6 +6,7 @@
 
 VERSION=0.2.0
 CL_RELEASE=cl-release-$(VERSION)
+DOTEMACS=$(HOME)/.emacs.d/init.el
 
 # paths
 scrdir=.
@@ -43,5 +44,9 @@ install: all installdirs
 
 installdirs:
 	mkdir -p $(DESTDIR)$(bindir)
+
+README.txt: doc/README.org
+	emacs --batch -l $(DOTEMACS) --visit $< -f org-ascii-export-to-ascii
+	mv doc/README.txt .
 
 .PHONY: all clean distclean dist install installdirs

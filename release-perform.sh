@@ -90,6 +90,10 @@ source "release-prepare"
 
 echo "${BOLD}Performing release for $SYSTEM-$RELEASE_VERSION${NORM}"
 echo "$RELEASE_VERSION" > version
+echp "${BOLD}Make README...${NORM}"
+make README.txt
+verify_exit
+
 git add version
 git commit -m "Release v$RELEASE_VERSION"
 verify_exit
