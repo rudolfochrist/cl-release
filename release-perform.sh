@@ -122,6 +122,8 @@ if [ "$PUSH" -gt 0 ]; then
     echo "${BOLD}Pushing repository...${NORM}"
     git push
     verify_exit
+    git push --tags
+    verify_exit
 fi
 
 rm release-prepare
