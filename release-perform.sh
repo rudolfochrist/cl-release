@@ -39,7 +39,7 @@ EOF
 
 # Parsing args
 
-VERSION=0.5
+VERSION=0.6.0
 PUSH=1
 NEXT_DEV_VERSION=""
 
