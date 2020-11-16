@@ -87,14 +87,14 @@ if [ ! -e "$SYSTEM.asd" ]; then
 fi
 
 # check if clean
-if [ "$FORCE" = 0 ] && [ -e "release-prepare" ]; then
+if [ "$FORCE" = 0 ] && [ -e "cl-release.properties" ]; then
     echo "Release in progress. Please run release-perform or distclean the project." >&2
     exit 1
 fi
 
 echo "${BOLD}Preparing release $SYSTEM v$RELEASE_VERSION${NORM}"
 
-cat > release-prepare <<EOF
+cat > cl-release.properties <<EOF
 SYSTEM=$SYSTEM
 RELEASE_VERSION=$RELEASE_VERSION
 EOF
@@ -108,7 +108,7 @@ SHELLP=1 $LISP --eval "(require 'asdf)" \
 
 if [ $? -ne 0 ]; then
     echo "${BOLD}${RED}ERROR.${NC}${NORM}"
-    rm release-prepare
+    rm cl-release.properties
     exit 1
 else
     echo "${BOLD}${GREEN}FINISHED${NC}${NORM}"

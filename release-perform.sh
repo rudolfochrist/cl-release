@@ -82,11 +82,11 @@ if [ -n "$(git diff --name-only)" ] || [ -n "$(git diff --name-only --cached)" ]
     exit 1
 fi
 
-if [ ! -e "release-prepare" ]; then
+if [ ! -e "cl-release.properties" ]; then
     echo "Please run release-prepare to prepare a release." >&2
     exit 1
 fi
-source "release-prepare"
+source "cl-release.properties"
 
 echo "${BOLD}Performing release for $SYSTEM-$RELEASE_VERSION${NORM}"
 echo "$RELEASE_VERSION" > version
@@ -126,6 +126,6 @@ if [ "$PUSH" -gt 0 ]; then
     verify_exit
 fi
 
-rm release-prepare
+rm cl-release.properties
 verify_exit
 echo "${BOLD}${GREEN}Finished.${NC}${NORM}"
