@@ -101,9 +101,10 @@ EOF
 
 echo "${BOLD}Loading system and running tests${NORM}"
 
-SHELLP=1 $LISP --eval "(require 'asdf)" \
+$LISP --eval "(require 'asdf)" \
       --eval "(push *default-pathname-defaults* asdf:*central-registry*)" \
       --eval "(asdf:load-system \"$SYSTEM\")" \
+      --eval '(asdf-user:*test-interactive* t)' \
       --eval "(asdf:test-system \"$SYSTEM\")"
 
 if [ $? -ne 0 ]; then
