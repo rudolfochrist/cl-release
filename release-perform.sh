@@ -102,8 +102,9 @@ echo "$RELEASE_VERSION" > version
 if [ "$skip_readme" != "t" ]; then
     echo "${BOLD}Make README...${NORM}"
     make README.txt
+    git add README.txt
     verify_exit
-fi 
+fi
 
 git add version
 git commit -m "Release v$RELEASE_VERSION"
