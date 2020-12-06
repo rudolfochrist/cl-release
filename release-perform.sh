@@ -99,7 +99,7 @@ source "cl-release.properties"
 echo "${BOLD}Performing release for $SYSTEM-$RELEASE_VERSION${NORM}"
 echo "$RELEASE_VERSION" > version
 
-if [ "$SKIP_README" = "t" ]; then
+if [ "$skip_readme" != "t" ]; then
     echo "${BOLD}Make README...${NORM}"
     make README.txt
     verify_exit
