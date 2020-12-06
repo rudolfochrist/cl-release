@@ -75,7 +75,7 @@ eval set -- "$PARAMS"
 assert_value "SYSTEM" "$1"
 assert_value "VERSION" "$2"
 
-SYSTEM=$1
+SYSTEM="$(basename -s .asd $1)"
 RELEASE_VERSION=$2
 
 # Program
@@ -104,7 +104,7 @@ echo "${BOLD}Loading system and running tests${NORM}"
 $LISP --eval "(require 'asdf)" \
       --eval "(push *default-pathname-defaults* asdf:*central-registry*)" \
       --eval "(asdf:load-system \"$SYSTEM\")" \
-      --eval '(asdf-user:*test-interactive* t)' \
+      --eval '(setf asdf-user:*test-interactive* t)' \
       --eval "(asdf:test-system \"$SYSTEM\")"
 
 if [ $? -ne 0 ]; then
