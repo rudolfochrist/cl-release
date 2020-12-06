@@ -20,7 +20,10 @@ assert_value ()
 
 verify_exit ()
 {
-    [ "$?" -gt 0 ]&& echo "${BOLD}${RED}Error.${NC}${NORM}" && exit 1
+    if [ "$?" -gt 0 ] ;then
+        echo "${BOLD}${RED}Error.${NC}${NORM}"
+        exit 1
+    fi
 }
 
 usage ()
