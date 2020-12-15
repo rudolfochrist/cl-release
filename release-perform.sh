@@ -114,7 +114,7 @@ echo "${BOLD}Tagging release...${NORM}"
 git tag -a "$RELEASE_VERSION" -m "Release v$RELEASE_VERSION"
 verify_exit
 
-# increment the last segment of the version string and append 100101118 for development
+# increment the last segment of the version string and append 1 for development
 if [ -n "$NEXT_DEV_VERSION"]; then
     IFS='.' read -ra v_parts <<< "$RELEASE_VERSION"
     last_part=${v_parts[${#v_parts[@]}-1]}
@@ -124,7 +124,7 @@ if [ -n "$NEXT_DEV_VERSION"]; then
         v_parts+=(1)
     fi
     joined=$(echo "${v_parts[@]}" | tr ' ' '.')
-    NEXT_DEV_VERSION="$joined.100101118"
+    NEXT_DEV_VERSION="$joined.1"
 fi
 
 
