@@ -26,6 +26,7 @@ Usage: $(basename $0) [options] SYSTEM VERSION
 Options:
   -cl, --lisp-implementation            Specify the lisp implemntation. Defaults
                                         to $LISP.
+  --skip-tests                          Don't run tests.
   -f, --force                           Force running the script, regardless if a release is active.
   -v, --version                         Show version.
   -h, --help                            Show help.
@@ -37,6 +38,7 @@ EOF
 VERSION=1.0.1.1
 LISP="sbcl --non-interactive"
 FORCE=0
+RUN_TESTS="(progn (setf asdf-user:*test-interactive* t) (asdf:test-system \"$SYSTEM\"))"
 
 PARAMS=""
 
@@ -49,6 +51,10 @@ while (( "$#" )); do
             ;;
         -f | --force)
             FORCE=1
+            shift
+            ;;
+        --skip-tests)
+            RUN_TESTS=t
             shift
             ;;
         -v|--version)
@@ -104,8 +110,7 @@ echo "${BOLD}Loading system and running tests${NORM}"
 $LISP --eval "(require 'asdf)" \
       --eval "(push *default-pathname-defaults* asdf:*central-registry*)" \
       --eval "(asdf:load-system \"$SYSTEM\")" \
-      --eval '(setf asdf-user:*test-interactive* t)' \
-      --eval "(asdf:test-system \"$SYSTEM\")"
+      --eval "$RUN_TESTS"
 
 if [ $? -ne 0 ]; then
     echo "${BOLD}${RED}ERROR.${NC}${NORM}"
