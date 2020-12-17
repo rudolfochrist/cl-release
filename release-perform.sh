@@ -33,7 +33,6 @@ Usage: $(basename $0) [options]
 
 Options:
   --no-push                              Don't push to remote repository
-  --skip-readme                          Don't run make's README.txt target
   -n, --next-dev-version                 Specify the next development version
   -v, --version                          Show version.
   -h, --help                             Show help.
@@ -52,10 +51,6 @@ while (( "$#" )); do
     case "$1" in
         --no-push)
             PUSH=0
-            shift
-            ;;
-        --skip-readme)
-            skip_readme="t"
             shift
             ;;
         -n|--next-dev-version)
@@ -98,13 +93,6 @@ source "cl-release.properties"
 
 echo "${BOLD}Performing release for $SYSTEM-$RELEASE_VERSION${NORM}"
 echo "$RELEASE_VERSION" > version
-
-if [ "$skip_readme" != "t" ]; then
-    echo "${BOLD}Make README...${NORM}"
-    make README.txt
-    git add README.txt
-    verify_exit
-fi
 
 git add version
 git commit -m "Release v$RELEASE_VERSION"
