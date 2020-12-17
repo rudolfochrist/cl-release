@@ -35,7 +35,7 @@ EOF
 
 # Parsing args
 
-VERSION=1.0.1.1
+VERSION=1.0.1
 LISP="sbcl --non-interactive"
 FORCE=0
 RUN_TESTS="(progn (setf asdf-user:*test-interactive* t) (asdf:test-system \"$SYSTEM\"))"
