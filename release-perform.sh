@@ -79,12 +79,6 @@ done
 # set positional arguments in their proper place
 eval set -- "$PARAMS"
 
-# check for uncommited changes
-if [ -n "$(git diff --name-only)" ] || [ -n "$(git diff --name-only --cached)" ]; then
-    echo "There are uncommited changes." >&2
-    exit 1
-fi
-
 if [ ! -e "cl-release.properties" ]; then
     echo "Please run release-prepare to prepare a release." >&2
     exit 1

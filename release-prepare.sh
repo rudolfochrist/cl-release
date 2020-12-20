@@ -98,6 +98,13 @@ if [ "$FORCE" = 0 ] && [ -e "cl-release.properties" ]; then
     exit 1
 fi
 
+# check for uncommited changes
+if [ -n "$(git diff --name-only)" ] || [ -n "$(git diff --name-only --cached)" ]; then
+    echo "There are uncommited changes. Please commit everything before making a release." >&2
+    exit 1
+fi
+
+
 echo "${BOLD}Preparing release $SYSTEM v$RELEASE_VERSION${NORM}"
 
 cat > cl-release.properties <<EOF
