@@ -38,7 +38,7 @@ EOF
 VERSION=1.0.2.1
 LISP="sbcl --non-interactive"
 FORCE=0
-RUN_TESTS="(progn (setf asdf-user:*test-interactive* t) (asdf:test-system \"$SYSTEM\"))"
+RUN_TESTS=t
 
 PARAMS=""
 
@@ -116,8 +116,11 @@ echo "${BOLD}Loading system and running tests${NORM}"
 
 $LISP --eval "(require 'asdf)" \
       --eval "(push *default-pathname-defaults* asdf:*central-registry*)" \
-      --eval "(asdf:load-system \"$SYSTEM\")" \
-      --eval "$RUN_TESTS"
+      --eval "(asdf:load-system \"$SYSTEM\")"
+
+if [ "$RUN_TESTS" = "t" ]; then
+    make check
+fi
 
 if [ $? -ne 0 ]; then
     echo "${BOLD}${RED}ERROR.${NC}${NORM}"
