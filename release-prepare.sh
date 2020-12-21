@@ -21,7 +21,7 @@ assert_value ()
 usage ()
 {
     cat <<EOF
-Usage: $(basename $0) [options] SYSTEM VERSION
+Usage: $(basename $0) [options] SYSTEM [VERSION]
 
 Options:
   -cl, --lisp-implementation            Specify the lisp implemntation. Defaults
@@ -79,7 +79,6 @@ done
 eval set -- "$PARAMS"
 
 assert_value "SYSTEM" "$1"
-assert_value "VERSION" "$2"
 
 SYSTEM="$(basename -s .asd $1)"
 RELEASE_VERSION=$2
@@ -104,6 +103,21 @@ if [ -n "$(git diff --name-only)" ] || [ -n "$(git diff --name-only --cached)" ]
     exit 1
 fi
 
+if [ -z "$RELEASE_VERSION" ]; then
+    v_file=$(cat version)
+    IFS='.' read -ra vparts <<< "$v_file"
+    rv=()
+    counter=0
+    while [ "$counter" -lt 3 ]; do
+        curr="${vparts[$counter]}"
+        if [ -z "$curr" ]; then
+            break
+        fi
+        rv+=($curr)
+        ((counter++))
+    done
+    RELEASE_VERSION=$(echo "${rv[@]}" | tr ' ' '.')
+fi
 
 echo "${BOLD}Preparing release $SYSTEM v$RELEASE_VERSION${NORM}"
 
