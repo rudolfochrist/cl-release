@@ -121,6 +121,7 @@ fi
 
 echo "${BOLD}Preparing release $SYSTEM v$RELEASE_VERSION${NORM}"
 
+echo "$RELEASE_VERSION" > version
 cat > cl-release.properties <<EOF
 SYSTEM=$SYSTEM
 RELEASE_VERSION=$RELEASE_VERSION
