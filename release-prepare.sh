@@ -54,7 +54,7 @@ while (( "$#" )); do
             shift
             ;;
         --skip-tests)
-            RUN_TESTS=t
+            RUN_TESTS=nil
             shift
             ;;
         -v|--version)
