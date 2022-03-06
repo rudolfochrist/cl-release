@@ -105,18 +105,7 @@ fi
 
 if [ -z "$RELEASE_VERSION" ]; then
     v_file=$(cat version)
-    IFS='.' read -ra vparts <<< "$v_file"
-    rv=()
-    counter=0
-    while [ "$counter" -lt 3 ]; do
-        curr="${vparts[$counter]}"
-        if [ -z "$curr" ]; then
-            break
-        fi
-        rv+=($curr)
-        ((counter++))
-    done
-    RELEASE_VERSION=$(echo "${rv[@]}" | tr ' ' '.')
+    RELEASE_VERSION="${v_file%.0}"
 fi
 
 echo "${BOLD}Preparing release $SYSTEM v$RELEASE_VERSION${NORM}"
@@ -143,4 +132,5 @@ if [ $? -ne 0 ]; then
     exit 1
 else
     echo "${BOLD}${GREEN}FINISHED${NC}${NORM}"
+    echo "Update version number in README, documentation, etc."
 fi

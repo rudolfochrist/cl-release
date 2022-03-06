@@ -87,7 +87,7 @@ source "cl-release.properties"
 
 echo "${BOLD}Performing release for $SYSTEM-$RELEASE_VERSION${NORM}"
 
-# only add files that are already tracked. We don't ant to commit the
+# only add files that are already tracked. We don't want to commit the
 # cl-release.properties.
 git add -u
 git commit -m "Release v$RELEASE_VERSION"
@@ -97,18 +97,14 @@ echo "${BOLD}Tagging release...${NORM}"
 git tag -a "$RELEASE_VERSION" -m "Release v$RELEASE_VERSION"
 verify_exit
 
-# increment the last segment of the version string and append 1 for
+# increment the last segment of the version string and append 0 for
 # development
 if [ -n "$NEXT_DEV_VERSION"]; then
     IFS='.' read -ra v_parts <<< "$RELEASE_VERSION"
     last_part=${v_parts[${#v_parts[@]}-1]}
     v_parts[${#v_parts[@]}-1]=$(( $last_part + 1))
-    # filling up with 1 to get a 3 digit version
-    if [ ${#v_parts[@]} -eq 2 ]; then
-        v_parts+=(1)
-    fi
     joined=$(echo "${v_parts[@]}" | tr ' ' '.')
-    NEXT_DEV_VERSION="$joined.1"
+    NEXT_DEV_VERSION="$joined.0"
 fi
 
 
