@@ -45,8 +45,4 @@ install: all installdirs
 installdirs:
 	mkdir -p $(DESTDIR)$(bindir)
 
-README.txt: doc/README.org
-	emacs --batch -l $(DOTEMACS) --visit $< -f org-ascii-export-to-ascii
-	mv doc/README.txt .
-
 .PHONY: all clean distclean dist install installdirs
