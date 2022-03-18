@@ -130,5 +130,6 @@ if [ $? -ne 0 ]; then
     exit 1
 else
     echo "${BOLD}${GREEN}FINISHED${NC}${NORM}"
-    echo "Update version number in README, documentation, etc."
+    echo
+    echo "${BOLD}=> Update version number in README, documentation, etc.${NORM}"
 fi
