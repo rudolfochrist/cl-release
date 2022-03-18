@@ -35,7 +35,7 @@ EOF
 
 # Parsing args
 
-VERSION=1.1.0
+VERSION=1.2
 LISP="sbcl --non-interactive"
 FORCE=0
 RUN_TESTS=t
