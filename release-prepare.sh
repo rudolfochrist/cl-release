@@ -120,7 +120,7 @@ echo "${BOLD}Loading system and running tests${NORM}"
 
 $LISP --eval "(asdf:load-system \"$SYSTEM\")"
 
-if [ "$RUN_TESTS" = "t" ]; then
+if [ "$RUN_TESTS" = "t" && -e Makefile ]; then
     make check
 fi
 
