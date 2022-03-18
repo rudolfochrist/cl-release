@@ -118,9 +118,7 @@ EOF
 
 echo "${BOLD}Loading system and running tests${NORM}"
 
-$LISP --eval "(require 'asdf)" \
-      --eval "(push *default-pathname-defaults* asdf:*central-registry*)" \
-      --eval "(asdf:load-system \"$SYSTEM\")"
+$LISP --eval "(asdf:load-system \"$SYSTEM\")"
 
 if [ "$RUN_TESTS" = "t" ]; then
     make check
