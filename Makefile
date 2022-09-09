@@ -35,8 +35,8 @@ distclean: clean
 
 dist: distclean
 	mkdir -p dist/$(CL_RELEASE)
-	cp -R $(SRCS) Makefile doc README.md dist/$(CL_RELEASE)
-	cd dist; tar czf ../$(CL_RELEASE).tar.gz $(CL_RELEASE)
+	cp -R $(SRCS) Makefile doc README.txt dist/$(CL_RELEASE)
+	cd dist && tar czf ../$(CL_RELEASE).tar.gz $(CL_RELEASE)
 	rm -rf dist
 
 install: all installdirs
