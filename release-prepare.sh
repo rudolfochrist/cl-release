@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 #set -xve
 
 # UI
@@ -12,7 +12,7 @@ NORM=$(tput sgr0)
 
 assert_value ()
 {
-    if [ -z "$2" ] || [ "${2:0:1}" = "-" ]; then
+    if [[ -z "$2" || "${2:0:1}" = "-" ]]; then
         echo "Error: Argument for $1 is missing" >&2
         exit 1
     fi
@@ -21,7 +21,7 @@ assert_value ()
 usage ()
 {
     cat <<EOF
-Usage: $(basename $0) [options] SYSTEM [VERSION]
+Usage: $(basename "$0") [options] SYSTEM [VERSION]
 
 Options:
   -cl, --lisp-implementation            Specify the lisp implemntation. Defaults
@@ -58,14 +58,14 @@ while (( "$#" )); do
             shift
             ;;
         -v|--version)
-            echo "$(basename $0) v$VERSION"
+            echo "$(basename "$0") v$VERSION"
             exit 0
             ;;
         -h|--help)
             usage
             exit 0
             ;;
-        -*|--*)
+        -*)
             echo "Error: Unsupported flag $1" >&2
             exit 1
             ;;
@@ -80,33 +80,33 @@ eval set -- "$PARAMS"
 
 assert_value "SYSTEM" "$1"
 
-SYSTEM="$(basename -s .asd $1)"
+SYSTEM="$(basename -s .asd "$1")"
 RELEASE_VERSION=$2
 
 # Program
 
 # check if system available
-if [ ! -e "$SYSTEM.asd" ]; then
+if [[ ! -e "$SYSTEM.asd" ]]; then
     echo "Can't find system $SYSTEM." >&2
     exit 1
 fi
 
 # check if clean
-if [ "$FORCE" = 0 ] && [ -e "cl-release.properties" ]; then
+if [[ "$FORCE" = 0 && -e "cl-release.properties" ]]; then
     echo "Release in progress. Please run release-perform or distclean the project." >&2
     exit 1
 fi
 
 # check for uncommited changes
-if [ -n "$(git diff --name-only)" ] || [ -n "$(git diff --name-only --cached)" ]; then
+if [[ -n "$(git diff --name-only)" || -n "$(git diff --name-only --cached)" ]]; then
     echo "There are uncommited changes. Please commit everything before making a release." >&2
     exit 1
 fi
 
-if [ -z "$RELEASE_VERSION" ]; then
+if [[ -z "$RELEASE_VERSION" ]]; then
     v_file=$(cat version)
     RELEASE_VERSION="${v_file%.0}"
-fi
+   fi
 
 echo "${BOLD}Preparing release $SYSTEM v$RELEASE_VERSION${NORM}"
 
@@ -120,11 +120,11 @@ echo "${BOLD}Loading system and running tests${NORM}"
 
 $LISP --eval "(asdf:load-system \"$SYSTEM\")"
 
-if [ "$RUN_TESTS" = "t" && -e Makefile ]; then
+if [[ "$RUN_TESTS" = "t" && -e Makefile ]]; then
     make check
 fi
 
-if [ $? -ne 0 ]; then
+if [[ "$?" -ne 0 ]]; then
     echo "${BOLD}${RED}ERROR.${NC}${NORM}"
     rm cl-release.properties
     exit 1
