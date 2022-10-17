@@ -4,7 +4,7 @@
 .SUFFIXES:
 .SUFFIXES: sh
 
-VERSION=1.4
+VERSION=1.5.0
 CL_RELEASE=cl-release-$(VERSION)
 DOTEMACS=$(HOME)/.emacs.d/init.el
 
