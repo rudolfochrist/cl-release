@@ -101,7 +101,7 @@ verify_exit
 
 # increment the last segment of the version string and append 0 for
 # development
-if [[ -n "$NEXT_DEV_VERSION" ]]; then
+if [[ -z "$NEXT_DEV_VERSION" ]]; then
     IFS='.' read -ra v_parts <<< "$RELEASE_VERSION"
     last_part=${v_parts[${#v_parts[@]}-1]}
     v_parts[${#v_parts[@]}-1]=$(( last_part + 1))
