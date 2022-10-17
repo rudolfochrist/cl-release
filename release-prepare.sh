@@ -1,10 +1,6 @@
 #!/bin/bash
-#set -xve
 
 # UI
-RED='\033[0;31m'
-GREEN='\033[0;32m'
-NC='\033[0m' # No Color
 BOLD=$(tput bold)
 NORM=$(tput sgr0)
 
@@ -81,7 +77,7 @@ eval set -- "$PARAMS"
 assert_value "SYSTEM" "$1"
 
 SYSTEM="$(basename -s .asd "$1")"
-RELEASE_VERSION=$2
+RELEASE_VERSION="$2"
 
 # Program
 
@@ -105,8 +101,9 @@ fi
 
 if [[ -z "$RELEASE_VERSION" ]]; then
     v_file=$(cat version)
+    [[ -z "$v_file" ]] && echo "${BOLD}Version file is empty!${NORM}" && exit 1
     RELEASE_VERSION="${v_file%.0}"
-   fi
+fi
 
 echo "${BOLD}Preparing release $SYSTEM v$RELEASE_VERSION${NORM}"
 
@@ -116,20 +113,21 @@ SYSTEM=$SYSTEM
 RELEASE_VERSION=$RELEASE_VERSION
 EOF
 
-echo "${BOLD}Loading system and running tests${NORM}"
+echo "${BOLD}Loading system${NORM}"
 
-$LISP --eval "(asdf:load-system \"$SYSTEM\")"
+if ! $LISP --eval "(asdf:load-system \"${SYSTEM}\")"; then
+    echo "${BOLD}Loading system ${SYSTEM} failed!${NORM}"
+    exit 1
+fi
 
 if [[ "$RUN_TESTS" = "t" && -e Makefile ]]; then
-    make check
+    echo "${BOLD}Running tests${NORM}"
+    if ! make check; then
+        echo "${BOLD}Tests failed.${NORM}"
+        exit 1
+    fi
 fi
 
-if [[ "$?" -ne 0 ]]; then
-    echo "${BOLD}${RED}ERROR.${NC}${NORM}"
-    rm cl-release.properties
-    exit 1
-else
-    echo "${BOLD}${GREEN}FINISHED${NC}${NORM}"
-    echo
-    echo "${BOLD}=> Update version number in README, documentation, etc.${NORM}"
-fi
+echo "${BOLD}FINISHED${NORM}"
+echo
+echo "${BOLD}=> Update version number in README, documentation, etc.${NORM}"

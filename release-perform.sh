@@ -1,10 +1,6 @@
 #!/bin/bash
-#set -xve
 
 # UI
-RED='\033[0;31m'
-GREEN='\033[0;32m'
-NC='\033[0m' # No Color
 BOLD=$(tput bold)
 NORM=$(tput sgr0)
 
@@ -18,12 +14,10 @@ assert_value ()
     fi
 }
 
-verify_exit ()
+print_error_and_exit ()
 {
-    if [[ "$?" -gt 0 ]] ;then
-       echo "${BOLD}${RED}Error.${NC}${NORM}"
-       exit 1
-    fi
+    echo "${BOLD}${1}${NORM}"
+    exit "${2:-1}"
 }
 
 usage ()
@@ -91,13 +85,17 @@ echo "${BOLD}Performing release for $SYSTEM-$RELEASE_VERSION${NORM}"
 
 # only add files that are already tracked. We don't want to commit the
 # cl-release.properties.
-git add -u
-git commit -m "Release v$RELEASE_VERSION"
-verify_exit
+if [[ -n "$(git status -uno --short)" ]]; then
+    git add -u
+    if ! git commit -m "Release v$RELEASE_VERSION"; then
+        print_error_and_exit "Cannot commit to git."
+    fi
+fi
 
 echo "${BOLD}Tagging release...${NORM}"
-git tag -a "$RELEASE_VERSION" -m "Release v$RELEASE_VERSION"
-verify_exit
+if ! git tag -a "$RELEASE_VERSION" -m "Release v$RELEASE_VERSION"; then
+    print_error_and_exit "Cannot create git tag ${RELEASE_VERSION}."
+fi
 
 # increment the last segment of the version string and append 0 for
 # development
@@ -113,17 +111,19 @@ fi
 echo "${BOLD}Set development version to $NEXT_DEV_VERSION...${NORM}"
 echo "$NEXT_DEV_VERSION" > version
 git add version
-git commit -m 'Start next development iteration'
-verify_exit
+if ! git commit -m 'Start next development iteration'; then
+    print_error_and_exit "Cannot commit next development iteration."
+fi
 
 if [[ "$PUSH" -gt 0 ]]; then
     echo "${BOLD}Pushing repository...${NORM}"
-    git push
-    verify_exit
-    git push --tags
-    verify_exit
+    if ! git push; then
+        print_error_and_exit "Git push failed."
+    fi
+    if ! git push --tags; then
+        print_error_and_exit "Git push tags failed."
+    fi
 fi
 
 rm cl-release.properties
-verify_exit
-echo "${BOLD}${GREEN}Finished.${NC}${NORM}"
+echo "${BOLD}Finished.${NORM}"
