@@ -93,7 +93,7 @@ if [[ -n "$(git status -uno --short)" ]]; then
 fi
 
 echo "${BOLD}Tagging release...${NORM}"
-if ! git tag -a "$RELEASE_VERSION" -m "Release v$RELEASE_VERSION"; then
+if ! git tag -s -a "$RELEASE_VERSION" -m "Release v$RELEASE_VERSION"; then
     print_error_and_exit "Cannot create git tag ${RELEASE_VERSION}."
 fi
 
